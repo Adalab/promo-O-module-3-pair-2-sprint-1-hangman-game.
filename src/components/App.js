@@ -1,6 +1,18 @@
 import '../styles/App.scss';
+import { useState } from 'react';
 
 function App() {
+  const [error, setError] = useState(0);
+  const handleCounter = (ev) => {
+    ev.preventDefault();
+    if (error <= 13) {
+      setError(error + 1);
+      console.log(error);
+    } else if (error > 13) {
+      setError(0);
+    }
+  };
+
   return (
     <div>
       <div className='page'>
@@ -47,8 +59,9 @@ function App() {
                 id='last-letter'
               />
             </form>
+            <button onClick={handleCounter}>Errores</button>
           </section>
-          <section className='dummy error-5'>
+          <section className={`dummy error-${error}`}>
             <span className='error-13 eye'></span>
             <span className='error-12 eye'></span>
             <span className='error-11 line'></span>
