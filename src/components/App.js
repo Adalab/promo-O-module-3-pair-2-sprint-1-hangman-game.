@@ -3,6 +3,15 @@ import { useState } from 'react';
 
 function App() {
   const [error, setError] = useState(0);
+  const [lastLetter, setlastLetter] = useState('');
+
+  const handleLastLetter = (ev) => {
+    const inputValue = ev.currentTarget.value;
+    if (/^[a-zA-Z]$/.test(inputValue)) {
+      setlastLetter(ev.currentTarget.value);
+    }
+  };
+
   const handleCounter = (ev) => {
     ev.preventDefault();
     if (error <= 13) {
@@ -26,11 +35,11 @@ function App() {
               <ul className='letters'>
                 <li className='letter'>k</li>
                 <li className='letter'>a</li>
-                <li className='letter'></li>
+                <li className='letter'>t</li>
                 <li className='letter'>a</li>
                 <li className='letter'>k</li>
                 <li className='letter'>r</li>
-                <li className='letter'></li>
+                <li className='letter'>o</li>
                 <li className='letter'>k</li>
                 <li className='letter'>e</li>
                 <li className='letter'>r</li>
@@ -57,6 +66,8 @@ function App() {
                 type='text'
                 name='last-letter'
                 id='last-letter'
+                //value={lastLetter}
+                onChange={handleLastLetter}
               />
             </form>
             <button onClick={handleCounter}>Errores</button>
