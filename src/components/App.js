@@ -2,13 +2,22 @@ import '../styles/App.scss';
 import { useState } from 'react';
 
 function App() {
-  const [error, setError] = useState(0);
+  //Estado palabra a adivinar
+  const [word, setWord] = useState('katacroker');
+  //Estado letras que introduce la jugadora
+  const [userLetters, setUserLetters] = useState([]);
+  //Estado la última letra introducida por la jugadora
   const [lastLetter, setlastLetter] = useState('');
+  //Para pintar el hangman
+  const [error, setError] = useState(0);
 
   const handleLastLetter = (ev) => {
     const inputValue = ev.currentTarget.value;
-    if (/^[a-zA-Z]$/.test(inputValue)) {
+    if (/^[a-zA-ZáäéëíïóöúüÁÄÉËÍÏÓÖÚÜñÑ]?$/.test(inputValue)) {
       setlastLetter(ev.currentTarget.value);
+      if (lastLetter !== '') {
+        setUserLetters([...userLetters, lastLetter]);
+      }
     }
   };
 
@@ -22,6 +31,21 @@ function App() {
     }
   };
 
+  const renderSolutionLetters = () => {
+    const wordLetters = word.split('');
+    return wordLetters.map((letter, index) => {
+      if (letter === lastLetter) {
+        return (
+          <li key={index} className='letter'>
+            {lastLetter}
+          </li>
+        );
+      } else {
+        return <li key={index} className='letter'></li>;
+      }
+    });
+  };
+
   return (
     <div>
       <div className='page'>
@@ -32,18 +56,7 @@ function App() {
           <section>
             <div className='solution'>
               <h2 className='title'>Solución:</h2>
-              <ul className='letters'>
-                <li className='letter'>k</li>
-                <li className='letter'>a</li>
-                <li className='letter'>t</li>
-                <li className='letter'>a</li>
-                <li className='letter'>k</li>
-                <li className='letter'>r</li>
-                <li className='letter'>o</li>
-                <li className='letter'>k</li>
-                <li className='letter'>e</li>
-                <li className='letter'>r</li>
-              </ul>
+              <ul className='letters'>{renderSolutionLetters()}</ul>
             </div>
             <div className='error'>
               <h2 className='title'>Letras falladas:</h2>
