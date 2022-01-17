@@ -8,15 +8,27 @@ function App() {
   const [userLetters, setUserLetters] = useState([]);
   //Estado la última letra introducida por la jugadora
   const [lastLetter, setlastLetter] = useState('');
-  //Para pintar el hangman
+  //Estado letras buenas
+  const [goodLetters, setGoodLetters] = useState([]);
+  //Estado letras fallidas
+  const [wrongLetters, setWrongLetters] = useState([]);
+  //Contador para pintar el hangman
   const [error, setError] = useState(0);
 
   const handleLastLetter = (ev) => {
+    ev.preventDefault();
     const inputValue = ev.currentTarget.value;
-    if (/^[a-zA-ZáäéëíïóöúüÁÄÉËÍÏÓÖÚÜñÑ]?$/.test(inputValue)) {
-      setlastLetter(ev.currentTarget.value);
+    if (inputValue.match('^[a-zA-ZáäéëíïóöúüÁÄÉËÍÏÓÖÚÜñÑ]?$')) {
+      setlastLetter(inputValue);
       if (lastLetter !== '') {
         setUserLetters([...userLetters, lastLetter]);
+        if (word.includes(inputValue)) {
+          //Al array de letras buenas
+          setGoodLetters([...goodLetters, lastLetter]);
+        } else {
+          //Al array de letras fallidas
+          setWrongLetters([...wrongLetters, lastLetter]);
+        }
       }
     }
   };
@@ -34,10 +46,10 @@ function App() {
   const renderSolutionLetters = () => {
     const wordLetters = word.split('');
     return wordLetters.map((letter, index) => {
-      if (letter === lastLetter) {
+      if (goodLetters.findIndex((currentLetter) => letter === currentLetter) !== -1) {
         return (
           <li key={index} className='letter'>
-            {lastLetter}
+            {letter}
           </li>
         );
       } else {
